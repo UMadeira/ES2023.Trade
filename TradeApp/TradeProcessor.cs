@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace TradeApp
 {
-    internal class TradeProcessor
+    internal class TradeProcessor 
     {
         public TradeProcessor( ILogger logger, 
             ITradeDataProvider provider, ITradeDataParser parser, ITradeDataStore store ) 
@@ -21,7 +21,6 @@ namespace TradeApp
         private ITradeDataParser Parser { get; }
 
         private ITradeDataStore Store { get; set; }
-
 
         public void ProcessTrades(Stream stream)
         {

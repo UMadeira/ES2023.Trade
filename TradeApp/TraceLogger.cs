@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace TradeApp
 {
-    internal class ConsoleLogger : ILogger
+    internal class TraceLogger : ILogger
     {
-        public ConsoleLogger() 
+        public TraceLogger() 
         { 
         }
-
         public void Log(string message, params object[] parameters)
         {
-            Console.WriteLine( message, parameters );
+            System.Diagnostics.Trace.WriteLine(
+                string.Format( message, parameters ) );
         }
     }
 }

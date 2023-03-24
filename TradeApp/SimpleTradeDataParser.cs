@@ -8,7 +8,7 @@ namespace TradeApp
 {
     internal class SimpleTradeDataParser : ITradeDataParser
     {
-        SimpleTradeDataParser( ITradeDataValidator validator, ITradeDataMapper mapper )
+        public SimpleTradeDataParser( ITradeDataValidator validator, ITradeDataMapper mapper )
         {
             Validator = validator;
             Mapper = mapper;    
