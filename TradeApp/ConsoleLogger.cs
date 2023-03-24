@@ -12,6 +12,8 @@ namespace TradeApp
         { 
         }
 
+        private int Counter { get; set; } = 0;
+
         public void Log(string message, params object[] parameters)
         {
             Console.WriteLine( message, parameters );

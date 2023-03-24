@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace TradeApp
@@ -6,15 +7,30 @@ namespace TradeApp
     internal class Program
     {
         static void Main(string[] args)
-        {
+        { 
+      
             Console.WriteLine("TradeApp v1.0!");
+
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddUserSecrets<Program>()
+                .Build();
+
+            var password = config["Password"];
 
             try
             {
-                using var stream = File.OpenRead("TradeData.txt");
+                var filename = config["TradeFile"];
+                using var stream = File.OpenRead(filename);
 
                 var services = new ServiceCollection();
-                services.AddSingleton<ILogger,ConsoleLogger>();
+                services.AddSingleton<ILogger>( 
+                    (sp) => 
+                        new DateLoggerDecorator( 
+                            new NumberLoggerDecorator(
+                                new CompositeLogger( new ConsoleLogger(), new TraceLogger() ) ) ) );
+
                 services.AddSingleton<ITradeDataProvider>(
                     (sp) => new SimpleTradeDataProvider(stream));
                 services.AddScoped<ITradeDataValidator, SimpleTradeDataValidator>();
@@ -28,6 +44,8 @@ namespace TradeApp
 
                 var processor = provider.GetService<TradeProcessor>();
                 processor?.ProcessTrades( stream );
+
+
                 
             }
             catch ( Exception ex) 
