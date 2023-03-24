@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
-using System.Runtime.CompilerServices;
-using System.Diagnostics;
 
 namespace TradeApp
 {
