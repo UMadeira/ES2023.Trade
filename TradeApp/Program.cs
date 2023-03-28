@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,8 +13,13 @@ namespace TradeApp
 
             using var stream = File.OpenRead( "TradeData.txt" );
 
-            var processor = new TradeProcessor();
-            processor.ProcessTrades( stream );
+            var provider = new SimpleTradeDataProvider( stream );
+            var parser = new SimpleTradeDataParser(
+                new SimpleTradeDataValidator(), new SimpleTradeDataMapper());
+            var store = new NullTradeDataStore();
+
+            var processor = new TradeProcessor( provider, parser, store );
+            processor.ProcessTrades();
         }
     }
 }
