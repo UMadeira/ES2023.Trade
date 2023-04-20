@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TradeApp.Logging;
 
 namespace TradeApp
 {
     public class SimpleTradeDataMapper : ITradeDataMapper
     {
+        public SimpleTradeDataMapper( ILogger logger ) 
+        { 
+            Logger = logger;
+        }
+
+        private ILogger Logger { get; set; }
+
         public TradeRecord Map(string[] fields)
         {
+            Logger.Log($"Map: { string.Join(',', fields) }");
+
             var sourceCurrencyCode = fields[0].Substring(0, 3);
             var destinationCurrencyCode = fields[0].Substring(3, 3);
             var tradeAmount = int.Parse(fields[1]);

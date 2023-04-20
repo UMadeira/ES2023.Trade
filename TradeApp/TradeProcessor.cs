@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
+﻿using TradeApp.Logging;
 
 namespace TradeApp
 {
     public class TradeProcessor
     {
-        public TradeProcessor( 
+        public TradeProcessor( ILogger logger,
             ITradeDataProvider provider, ITradeDataParser parser, ITradeDataStore store ) 
         { 
+            Logger    = logger;
             Provider  = provider;
             Parser    = parser; 
             DataStore = store;
         }
+
+        private ILogger Logger { get; }
 
         private ITradeDataProvider Provider { get; }
         private ITradeDataParser Parser { get; }
@@ -28,12 +26,7 @@ namespace TradeApp
             var trades = Parser.Parse(lines);
             DataStore.Save( trades );
 
-            Log("INFO: {0} trades processed", trades.Count() );
-        }
-
-        private void Log( string message, params object[] parameters )
-        {
-            Console.WriteLine( message, parameters );
+            Logger.Log("INFO: {0} trades processed", trades.Count() );
         }
 
     }
